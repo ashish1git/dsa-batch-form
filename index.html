@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DSA Batch Registration</title>
-<meta name="google-site-verification" content="HcRJUgvX3tJIBeCfTpj22oYThW17CkPlN09O3l7uUVU" />
-    <!-- google-site-verification: googleff7504e0d65ce49f.html -->
     
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -147,15 +145,10 @@
             <p class="text-gray-300">
                 We recently conducted a DSA session and truly appreciate everyone's participation! To ensure we provide the most effective support, we're organizing upcoming DSA batches suited to your needs.
             </p>
-            <p style="color: green; font-weight: bold;">
-  This form is for DSA Batch Registration by Ashish Vishwakarma for educational purposes only.
-</p>
         </div>
         
-        <!-- The form no longer needs an action or method attribute -->
         <form id="registration-form">
             <div class="space-y-6">
-                <!-- Form fields remain the same -->
                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label for="name" class="block mb-2 text-sm font-medium text-gray-300">Full Name</label>
@@ -213,13 +206,9 @@
                 <button type="submit" id="submit-button" class="submit-btn w-full text-white font-bold py-3 px-4 rounded-lg text-lg">
                     Submit My Preference
                 </button>
-                <p style="font-size: 0.9em;">
-  We do not collect any sensitive or financial information. This data will not be shared and is used solely for coordinating batch sessions.
-</p>
             </div>
              <p class="text-xs text-gray-500 mt-4 text-center">Thank you for your cooperation!</p>
         </form>
-        
     </main>
     
     <!-- Success Overlay -->
@@ -227,13 +216,82 @@
         <div class="success-message">
             <p id="success-line-1"></p>
             <p id="success-line-2">> Preference logged successfully.</p>
-            <p id="success-line-3">> Your data has been saved to our records.</p>
+            <p id="success-line-3">> Your data has been saved to our secure database.</p>
             <p id="success-line-4">> Keep practicing. Get ready to level up your skills!</p>
         </div>
     </div>
 
-    <script>
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // !!! IMPORTANT: PASTE YOUR FIREBASE CONFIGURATION OBJECT HERE !!!
+        const firebaseConfig = {
+    apiKey: "AIzaSyCwfwxKqqDp5KInp8yX56jCAAcmPo_AMbY",
+    authDomain: "dsa-form-responses.firebaseapp.com",
+    databaseURL: "https://dsa-form-responses-default-rtdb.firebaseio.com",
+    projectId: "dsa-form-responses",
+    storageBucket: "dsa-form-responses.firebasestorage.app",
+    messagingSenderId: "786963294311",
+    appId: "1:786963294311:web:06940c4422e7ed92c90cc2",
+    measurementId: "G-3QPQP7J10J"
+  };;
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // --- Form Submission to Firebase Firestore ---
+        const form = document.getElementById('registration-form');
+        const submitButton = document.getElementById('submit-button');
+        const mainContent = document.getElementById('main-content');
+        const successOverlay = document.getElementById('success-overlay');
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            submitButton.disabled = true;
+            submitButton.textContent = 'Submitting...';
+
+            try {
+                // Create an object with the form data
+                const formData = {
+                    name: form.Name.value,
+                    rollNo: form.Roll_No.value,
+                    moodleId: form.Moodle_ID.value,
+                    phone: form.Phone.value,
+                    division: form.Division.value,
+                    batch: form.Batch.value,
+                    suggestions: form.Suggestions.value,
+                    submittedAt: serverTimestamp() // Adds a server-side timestamp
+                };
+
+                // Add a new document with a generated ID to the "registrations" collection.
+                const docRef = await addDoc(collection(db, "registrations"), formData);
+                console.log("Document written with ID: ", docRef.id);
+
+                // Show the success animation
+                const firstName = formData.name.split(' ')[0];
+                document.getElementById('success-line-1').textContent = `Thank you, ${firstName}!`;
+                mainContent.style.opacity = '0';
+                mainContent.style.transform = 'translateY(-30px)';
+                setTimeout(() => {
+                    mainContent.style.display = 'none';
+                    successOverlay.style.display = 'flex';
+                    setTimeout(() => successOverlay.style.opacity = '1', 50);
+                }, 500);
+
+            } catch (error) {
+                console.error("Error adding document: ", error);
+                alert('An error occurred while submitting the form. Please try again.');
+                submitButton.disabled = false;
+                submitButton.textContent = 'Submit My Preference';
+            }
+        });
+
         // --- Zero-Gravity Code Particle Animation ---
+        // (The animation code remains the same)
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
         let animationFrameId;
@@ -291,58 +349,6 @@
 
         window.addEventListener('resize', setupCanvas);
         setupCanvas();
-
-        // --- Form Submission to Google Sheets ---
-        const form = document.getElementById('registration-form');
-        const submitButton = document.getElementById('submit-button');
-        const mainContent = document.getElementById('main-content');
-        const successOverlay = document.getElementById('success-overlay');
-        
-        // !!! IMPORTANT !!!
-        // Replace this with your Google Apps Script Web App URL
-        const googleScriptURL = 'https://script.google.com/macros/s/AKfycbyuDG8P1Zm-_YVokw36p3X9CoK4w5MKt2HCDAfPGF7Yqo7Iap64q8Olir6_QqUosB8UsA/exec';
-
-        form.addEventListener('submit', function(e) {
-            e.preventDefault(); // Prevent default form submission
-
-            submitButton.disabled = true;
-            submitButton.textContent = 'Submitting...';
-
-            // Use FormData to gather all the form fields
-            const formData = new FormData(form);
-
-            fetch(googleScriptURL, {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.result === 'success') {
-                    // Show the success animation
-                    const name = document.getElementById('name').value;
-                    const firstName = name.split(' ')[0];
-                    document.getElementById('success-line-1').textContent = `Thank you, ${firstName}!`;
-                    mainContent.style.opacity = '0';
-                    mainContent.style.transform = 'translateY(-30px)';
-                    setTimeout(() => {
-                        mainContent.style.display = 'none';
-                        successOverlay.style.display = 'flex';
-                        setTimeout(() => successOverlay.style.opacity = '1', 50);
-                    }, 500);
-                } else {
-                    // Handle errors if the script fails
-                    throw new Error(data.error || 'Unknown error');
-                }
-            })
-            .catch(error => {
-                console.error('Error!', error.message);
-                alert('An error occurred. Please try again. ' + error.message);
-                submitButton.disabled = false;
-                submitButton.textContent = 'Submit My Preference';
-            });
-        });
-        
     </script>
-    
 </body>
 </html>
