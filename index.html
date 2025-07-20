@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="HcRJUgvX3tJIBeCfTpj22oYThW17CkPlN09O3l7uUVU" />
     <title>DSA Batch Registration</title>
+<<<<<<< HEAD
     
+=======
+   
+>>>>>>> cb7e556ac119667f977d5abad279901d5697aeb7
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -163,6 +167,7 @@
             </div>
         </div>
         
+<<<<<<< HEAD
         <div class="p-6 sm:p-8">
             <div class="text-center mb-6">
                 <h1 class="text-3xl sm:text-4xl font-bold font-code text-blue-400 mb-2">DSA Batch Selection</h1>
@@ -174,6 +179,42 @@
             <form id="registration-form">
                 <div class="space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+=======
+        <form id="registration-form">
+            <div class="space-y-6">
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="name" class="block mb-2 text-sm font-medium text-gray-300">Full Name</label>
+                        <input type="text" id="name" name="Name" class="form-input w-full p-2.5 rounded-lg" placeholder="John Doe" required>
+                    </div>
+                    <div>
+                        <label for="roll-no" class="block mb-2 text-sm font-medium text-gray-300">Roll No.</label>
+                        <input type="text" id="roll-no" name="Roll_No" class="form-input w-full p-2.5 rounded-lg" placeholder="e.g., 21" required>
+                    </div>
+                </div>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="moodle-id" class="block mb-2 text-sm font-medium text-gray-300">Moodle ID</label>
+                        <input type="text" id="moodle-id" name="Moodle_ID" class="form-input w-full p-2.5 rounded-lg" placeholder="e.g., 2110XXXX" required>
+                    </div>
+                    <div>
+                        <label for="phone" class="block mb-2 text-sm font-medium text-gray-300">Phone Number</label>
+                        <input type="tel" id="phone" name="Phone" class="form-input w-full p-2.5 rounded-lg" placeholder="e.g., 9876543210" required>
+                    </div>
+                </div>
+                <div>
+                    <label for="division" class="block mb-2 text-sm font-medium text-gray-300">Division</label>
+                    <select id="division" name="Division" class="form-input w-full p-2.5 rounded-lg" required>
+                        <option value="" disabled selected>Select your division</option>
+                        <option value="A">Div A</option>
+                        <option value="B">Div B</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block mb-3 text-sm font-medium text-gray-300">Preferred Batch</label>
+                    <p class="text-xs text-gray-400 mb-3">Please honestly evaluate your current understanding and choose one.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+>>>>>>> cb7e556ac119667f977d5abad279901d5697aeb7
                         <div>
                             <label for="name" class="block mb-2 text-sm font-medium text-gray-300">Full Name</label>
                             <input type="text" id="name" name="Name" class="form-input w-full p-2.5 rounded-lg" placeholder="John Doe" required>
@@ -254,6 +295,7 @@
 
         // !!! IMPORTANT: PASTE YOUR FIREBASE CONFIGURATION OBJECT HERE !!!
         const firebaseConfig = {
+<<<<<<< HEAD
             apiKey: "AIzaSyCwfwxKqqDp5KInp8yX56jCAAcmPo_AMbY",
             authDomain: "dsa-form-responses.firebaseapp.com",
             databaseURL: "https://dsa-form-responses-default-rtdb.firebaseio.com",
@@ -263,6 +305,17 @@
             appId: "1:786963294311:web:06940c4422e7ed92c90cc2",
             measurementId: "G-3QPQP7J10J"
         };
+=======
+    apiKey: "AIzaSyCwfwxKqqDp5KInp8yX56jCAAcmPo_AMbY",
+    authDomain: "dsa-form-responses.firebaseapp.com",
+    databaseURL: "https://dsa-form-responses-default-rtdb.firebaseio.com",
+    projectId: "dsa-form-responses",
+    storageBucket: "dsa-form-responses.firebasestorage.app",
+    messagingSenderId: "786963294311",
+    appId: "1:786963294311:web:06940c4422e7ed92c90cc2",
+    measurementId: "G-3QPQP7J10J"
+  };;
+>>>>>>> cb7e556ac119667f977d5abad279901d5697aeb7
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
